@@ -4,7 +4,7 @@
 
 If you use Docker, use thi line in your command prompt:
 ```
-docker-compose-up
+docker-compose up
 ```
 
 Otherwise:
