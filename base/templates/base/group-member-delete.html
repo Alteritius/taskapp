@@ -1,0 +1,22 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<div class="header-bar"> 
+    <!-- <a href="{% url 'group-detail' group.id %}">&#8592; Back</a> -->
+    <a id="go-back">&#8592; Back</a>
+</div>
+
+<div class="card-body">
+    <form method="POST">
+        {% csrf_token %}
+        {% if request.user == group.leader %}
+        <p>Are you sure you want to delete this user: "{{user}}" from the group: "{{group.name}}"" ?</p>
+        {% else %}
+        <p>Are you sure you want to leave this group: "{{group.name}}" ?</p>
+        {% endif %}
+        <input class="button" type="submit" value="Confirm"/>
+    </form>
+</div>
+
+
+{% endblock content %}

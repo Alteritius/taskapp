@@ -1,0 +1,259 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<div class="header-bar">
+    <div>
+        <h1>Calendar</h1>
+        <!-- <h3 style="margin:0"> You have <i>{{count}}</i> incomplete task{{ count|pluralize:"s" }}</h3> -->
+    </div>
+
+    <!-- <button class="last-visited-url-btn">Go Back</button> 
+    
+
+    {% if request.user.is_authenticated %}
+    <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+    <a href="{% url 'login' %}">Login</a>
+    {% endif %} -->
+
+</div>
+
+<div class="calendar-header">
+    <div class="break"></div>
+    <a class="calendar_button showYear" href="{% url 'calendar-year' %}"> Year </a>
+    <div class="break"></div>
+    <a class="calendar_button showMonth" href="{% url 'calendar' %}"> Month </a>
+    <!-- <a class="calendar_button showWeek" > Week </a> -->
+
+</div>
+
+<div>
+    <div class="calendar-header">
+
+        <a class="calendar_button" href="{% url 'calendar-week' %}?{{ prev_week }}"> Previous Week </a>
+        <div class="break"></div>
+        <a class="calendar_button" href="{% url 'calendar-week' %}?{{ next_week }}"> Next Week </a>
+
+        {% include 'legend.html' %}
+
+
+    </div>
+
+
+
+</div>
+
+<div class="calendar-container-week">
+
+
+    {% for weekday, all_tasks in tasks_for_day.items %}
+    {% if weekday == today %}
+    <div class="calendar-holder week">
+        <div class="weekday-title today">
+            {{ weekday }}
+        </div>
+        {% with tasks=all_tasks.0 group_tasks=all_tasks.1 %}
+
+        <div class="task-list today">
+            {% for task in tasks %}
+            {% if task.status == 'pending' %}
+            <div class="task-wrapper-week pending">
+                {% include 'task_list_code_week.html' %}
+            </div>
+            {% elif task.status == 'overdue' %}
+            <div class="task-wrapper-week overdue">
+                {% include 'task_list_code_week.html' %}
+            </div>
+            {% elif task.status == 'completed' %}
+            <div class="task-wrapper-week completed">
+                {% include 'task_list_code_week.html' %}
+            </div>
+            {% endif %}
+            {% endfor %}
+
+            {% for task in group_tasks %}
+
+            <div class="task-wrapper-week group">
+                {% include 'task_list_code_group_week.html' %}
+            </div>
+
+            {% endfor %}
+            <div class="add-task">
+                <div class="add-task-circle">
+                    <a id="add-link" href="{% url 'task-create' weekday %}">&#43;</a>
+                </div>
+            </div>
+        </div>
+        {% endwith %}
+
+    </div>
+
+    {% else %}
+    <div class="calendar-holder week">
+        <div class="weekday-title">
+            {{ weekday }}
+        </div>
+        {% with tasks=all_tasks.0 group_tasks=all_tasks.1 %}
+        <div class="task-list">
+            {% for task in tasks %}
+            {% if task.status == 'pending' %}
+            <div class="task-wrapper-week pending">
+                {% include 'task_list_code_week.html' %}
+            </div>
+            {% elif task.status == 'overdue' %}
+            <div class="task-wrapper-week overdue">
+                {% include 'task_list_code_week.html' %}
+            </div>
+            {% elif task.status == 'completed' %}
+            <div class="task-wrapper-week completed">
+                {% include 'task_list_code_week.html' %}
+            </div>
+            {% endif %}
+            {% endfor %}
+
+            {% for task in group_tasks %}
+
+            <div class="task-wrapper-week group">
+                {% include 'task_list_code_group_week.html' %}
+            </div>
+
+            {% endfor %}
+
+            <div class="add-task">
+                <div class="add-task-circle">
+                    <a id="add-link" href="{% url 'task-create' weekday %}">&#43;</a>
+                </div>
+            </div>
+        </div>
+        {% endwith %}
+
+    </div>
+
+    {% endif %}
+
+
+    {% endfor %}
+
+</div>
+
+
+<!-- <div class="calendar-container-week">
+
+
+    {% for weekday, tasks in tasks_for_day.items %}
+    {% if weekday == today %}
+    <div class="calendar-holder week">
+        <div class="weekday-title today">
+            {{ weekday }}
+        </div>
+
+        <div class="task-list today">
+            {% for task in tasks %}
+            {% if task.is_group_task == False %}
+            {% if task.status == 'pending' %}
+            <div class="task-wrapper-week pending">
+                {% include 'task_list_code_week.html' %}
+            </div>
+            {% elif task.status == 'overdue' %}
+            <div class="task-wrapper-week overdue">
+                {% include 'task_list_code_week.html' %}
+            </div>
+            {% elif task.status == 'completed' %}
+            <div class="task-wrapper-week completed">
+                {% include 'task_list_code_week.html' %}
+            </div>
+            {% endif %}
+            {% elif task.is_group_task %}
+            <div class="task-wrapper-week group">
+                {% include 'task_list_code_group_week.html' %}
+            </div>
+            {% endif %}
+            {% endfor %}
+            <div class="add-task">
+                <div class="add-task-circle">
+                    <a id="add-link" href="{% url 'task-create' weekday %}">&#43;</a>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    {% else %}
+    <div class="calendar-holder week">
+        <div class="weekday-title">
+            {{ weekday }}
+        </div>
+
+        <div class="task-list">
+            {% for task in tasks %}
+            {% if task.is_group_task == False %}
+            {% if task.status == 'pending' %}
+            <div class="task-wrapper-week pending">
+                {% include 'task_list_code_week.html' %}
+            </div>
+            {% elif task.status == 'overdue' %}
+            <div class="task-wrapper-week overdue">
+                {% include 'task_list_code_week.html' %}
+            </div>
+            {% elif task.status == 'completed' %}
+            <div class="task-wrapper-week completed">
+                {% include 'task_list_code_week.html' %}
+            </div>
+            {% endif %}
+            {% elif task.is_group_task %}
+            <div class="task-wrapper-week group">
+                {% include 'task_list_code_group_week.html' %}
+            </div>
+            {% endif %}
+            {% endfor %}
+
+            <div class="add-task">
+                <div class="add-task-circle">
+                    <a id="add-link" href="{% url 'task-create' weekday %}">&#43;</a>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    {% endif %}
+    {% endfor %}
+
+</div> -->
+
+
+
+
+
+
+<!-- <div>
+    <h3>Calendar</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Mon</th>
+                <th>Tue</th>
+                <th>Wed</th>
+                <th>Thu</th>
+                <th>Fri</th>
+                <th>Sat</th>
+                <th>Sun</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for week in calendar %}
+                <tr>
+                    {% for day in week %}
+                        <td>{{ day|safe }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            
+        </tbody>
+    </table>
+
+</div> -->
+
+{% endblock content %}

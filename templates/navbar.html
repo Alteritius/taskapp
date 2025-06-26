@@ -1,0 +1,51 @@
+{% load static %}
+
+{% if request.user.is_authenticated %}
+<header class="nav-container">
+    <div class="navbar">
+        <div class="sidebar">
+            <div class="break"></div>
+            <a href="{% url 'profile' request.user.id %}" class="navlink">Profile</a>
+            <a href="{% url 'group-list' %}" class="navlink">Groups</a>
+            <a href="{% url 'dashboard' %}" class="navlink">Dashboard</a>
+            <a href="{% url 'tasks_for_today' %}" class="navlink">Today's tasks</a>
+            <a href="{% url 'calendar' %}" class="navlink">Calendar</a>
+            <a href="{% url 'notifications-list' %}" class="navlink">Notifications</a>
+            <!-- <a href="#" class="navlink">Settings</a> -->
+
+        </div>
+        <div class="arrow">
+            <i class="fas fa-arrow-circle-up"></i>
+        </div>
+
+        <div class="logout-button">
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="button">Logout</button>
+            </form>
+        </div>
+
+        <a href="{% url 'notifications-list' %}">
+            <div class="bell">
+                <i class="fas fa-bell"></i>
+            </div>    
+        </a>
+        
+        <!-- <div class="notifications">
+
+
+        </div> -->
+
+        <a href="{% url 'profile' request.user.id %}">
+            <div class="profile-picture">
+                <img src="{{ request.user.profile.profile_picture.url }}">
+            </div>
+        </a>
+
+
+
+
+    </div>
+</header>
+
+{% endif %}

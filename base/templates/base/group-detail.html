@@ -1,0 +1,180 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<div class="header-bar">
+
+    <!-- <a href="{% url 'group-list' %}">&#8592; Back</a> -->
+    <a id="go-back">&#8592; Back</a>
+    <div class="title">
+        <h1 class="title">Group: {{group.name}}</h1>
+        <!-- <h3 style="margin:0"> You have <i>{{count}}</i> incomplete task{{ count|pluralize:"s" }}</h3> -->
+    </div>
+
+</div>
+
+<div class="participant-container">
+
+    <div class="group-header">
+        <h3>Leader:</h3>
+    </div>
+
+
+    <div class="leader-section">
+
+        <div class="leader-profile">
+            <a href="{% url 'profile' group.leader.id %}"><img src="{{group.leader.profile.profile_picture.url}}"></a>
+
+        </div>
+        <h2>{{group.leader.username}}</h2>
+
+    </div>
+
+    <div class="group-header">
+        <h3>List of participants:</h3>
+
+        {% if request.user == group.leader %}
+        <a class="button" href="{% url 'group-update' group.id %}">Update Group</a>
+
+        {% elif request.user in participants %}
+        <a class="button" href="{% url 'group-member-delete' group.id request.user.id %}">Leave the group</a>
+        {% endif %}
+    </div>
+
+
+    <div class="participant-list">
+
+        {% for participant in participants %}
+
+        <div class="leader-section">
+
+            <div class="leader-profile">
+                <a href="{% url 'profile' participant.id %}"><img src="{{participant.profile.profile_picture.url}}"></a>
+
+
+                {% if group.leader == request.user %}
+                <a class="delete-link" href="{% url 'group-member-delete' group.id participant.id %}">
+                    <div class="delete-circle"><span>&#215;</span></div>
+                </a>
+                {% endif %}
+
+            </div>
+            <h2>{{participant.username}}</h2>
+
+        </div>
+
+        {% empty %}
+        <h3 class="empty">There aren't any participants yet</h3>
+
+        {% endfor %}
+
+    </div>
+
+    {% if pending_participants %}
+    <div class="group-header">
+        <h3>List of pending participants:</h3>
+    </div>
+
+
+    <div class="participant-list">
+
+        {% for participant in pending_participants %}
+
+
+        <div class="leader-section">
+
+            <div class="leader-profile">
+                <a href="{% url 'profile' participant.id %}"><img src="{{participant.profile.profile_picture.url}}"></a>
+
+            </div>
+            <h2>{{participant.username}}</h2>
+
+        </div>
+
+        {% empty %}
+        <h3 class="empty">There aren't any pending participants yet</h3>
+
+        {% endfor %}
+
+    </div>
+    {% endif %}
+
+
+
+</div>
+
+<div class="group-task-description">
+    <div class="group-header">
+        <h3>Description:</h3>
+    </div>
+    <div class="description">
+        {{group.description}}
+    </div>
+
+
+</div>
+
+
+<!-- <div class="group-task-discussion">
+
+    <div class="group-header">
+        <h3>Discussion:</h3>
+    </div>
+
+    <div class="discussion">
+
+
+
+    </div>
+
+</div> -->
+
+
+
+<div class="task-container">
+
+    <div class="task-list-header">
+        <h3>List of tasks:</h3>
+
+        {% if request.user == group.leader %}
+        <a class="button" href="{% url 'group-task-create' group.id %}">Create Group Task</a>
+        {% endif %}
+
+    </div>
+
+
+    <div id="search-add-wrapper">
+        <input type="text" name="search-area" id="search-tasks" value="{{search_query}}" placeholder="Search tasks">
+        <div class="group-task-filter">
+            <h5>Group Task Filter: </h5>
+            <select name="filter" id="group-task-filter">
+                <option value="all"> All</option>
+                <option value="pending"> Pending</option>
+                <option value="initiated"> Initiated</option>
+                <option value="finished"> Finished</option>
+                <option value="overdue"> Overdue</option>
+                <option value="need adjustments"> Need Adjustments</option>
+                <option value="verified"> Verified</option>
+            </select>
+        </div>
+        <!-- <a id="add-link" href="{% url 'task-create' 1 %}">&#43;</a> -->
+    </div>
+
+
+
+    <div class="task-items-wrapper">
+        {% for task in group_tasks %}
+        <div class="task-wrapper group">
+            {% include 'task_list_code_group.html' %}
+        </div>
+        {% empty %}
+        <h3 class="empty">There aren't any tasks yet</h3>
+        {% endfor %}
+    </div>
+
+
+</div>
+
+
+
+
+{% endblock content %}

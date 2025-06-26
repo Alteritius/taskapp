@@ -1,0 +1,22 @@
+version: "3.10"
+
+services:
+  app:
+    container_name: task_app
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 8000:8000
+    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      - DJANGO_SETTINGS-MODULE=taskapp.settings
+
+  qcluster:
+    container_name: task_qcluster
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: python manage.py qcluster
+    depends_on:
+      - app

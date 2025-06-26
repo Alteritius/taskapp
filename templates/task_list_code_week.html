@@ -1,0 +1,31 @@
+
+<!-- <div class="break"></div>
+{% if task.complete %}
+<div class="task-title">
+    <i><s><a href="{% url 'task-update' task.id %}">{{task}}</a></s></i>
+</div>
+<a class="delete-link" href="{% url 'task-delete' task.id %}">&#215;</a>
+{% else %}
+<div class="task-title">
+      <div class="task-incomplete-icon"></div> 
+    <a href="{% url 'task-update' task.id %}">{{task}}</a>
+</div>
+
+<a class="delete-link" href="{% url 'task-delete' task.id %}">&#215;</a>
+{% endif %} -->
+
+
+<!-- <div class="break"></div> -->
+<div class="task-title week">
+    
+    <a href="{% url 'task-update' task.id %}">
+        <div>
+            <h3>{{task}}</h3>
+            <h4>Until: {{task.end_time}}</h4>
+            <h4>Status: {{task.status}}</h4>
+        </div>
+    </a>
+
+</div>
+
+<a class="delete-link" href="{% url 'task-delete' task.id %}">&#215;</a>

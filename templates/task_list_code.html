@@ -1,0 +1,56 @@
+
+<!-- {% if task.complete %}
+<div class="task-title">
+    <div class="task-completion-icon">
+        <div class="task-complete-icon"></div>
+
+    </div>
+    
+    <a href="{% url 'task-update' task.id %}"><div class="task-info">
+        <i><s><h3>{{task}}</h3></s></i>
+        <h4>{{task.start_time}} - {{task.end_time}}</h4>
+    </div></a>
+    
+</div>
+<a class="delete-link" href="{% url 'task-delete' task.id %}">&#215;</a>
+{% else %}
+<div class="task-title">
+    <div class="task-completion-icon">
+        <div class="task-incomplete-icon"></div>
+
+    </div>
+    
+
+    <a href="{% url 'task-update' task.id %}"><div class="task-info">
+        <h3>{{task}}</h3>
+        <h4>{{task.start_time}} - {{task.end_time}}</h4>
+    </div></a>
+</div>
+
+<a class="delete-link" href="{% url 'task-delete' task.id %}">&#215;</a>
+{% endif %} -->
+
+
+<div class="task-title">
+    <div class="task-completion-icon">
+        {% if task.status == 'pending' %}
+            <div class="task-icon pending"></div>
+        {% elif task.status == 'overdue' %}
+            <div class="task-icon overdue"></div>
+        {% elif task.status == 'completed' %}
+            <div class="task-icon completed"></div>
+        {% endif %}
+    </div>
+    
+    <a href="{% url 'task-update' task.id %}"><div class="task-info">
+        <h3>{{task}}</h3>
+        <h4>{{task.start_time}} - {{task.end_time}}</h4>
+        <h4>Status: {{task.status}}</h4>
+    </div></a>
+
+    
+    
+</div>
+<div class="delete-space">
+    <a class="delete-link" href="{% url 'task-delete' task.id %}">&#215;</a>
+</div>

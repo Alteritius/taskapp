@@ -1,0 +1,93 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<div class="header-bar">
+    <a id="go-back">&#8592; Back</a>
+    <div class="title">
+        <h1 class="title">{{title}}</h1>
+        <!-- <h3 style="margin:0"> You have <i>{{count}}</i> incomplete task{{ count|pluralize:"s" }}</h3> -->
+    </div>
+</div>
+
+
+<!-- <div class="group-list"> -->
+<div class="card-body">
+    <form method="POST" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if create %}
+        <p>{{form.title.label_tag}}</p>
+        <p>{{form.title}}</p>
+        <p>{{form.description.label_tag}}</p>
+        <p>{{form.description}}</p>
+        <p>Choose member for the task:</p>
+        <p>{{form.member}}</p>
+        <p class="hidden">Status of the task:</p>
+        <p class="hidden">{{form.status}}</p>
+
+        <p>{{form.start_time.label_tag}}</p>
+        <p>{{form.start_time}}</p>
+        <p>{{form.end_time.label_tag}}</p>
+        <p>{{form.end_time}}</p>
+        <p>Do you want to upload files for member working on the project?</p>
+        <p><input class="button" type="button" name="group_files" id="group_file1" value="Browse Files"
+            onclick="document.getElementById('file1').click()"></p>
+        <p id="filename1"></p>
+        <p class="hidden"><input type="file" name="group_files" id="file1"></p>
+
+        {% else %}
+        {% if request.user == group_task.creator %}
+
+        <p>{{form.title.label_tag}}</p>
+        <p>{{form.title}}</p>
+        <p>{{form.description.label_tag}}</p>
+        <p>{{form.description}}</p>
+        <p class="hidden">Choose member for the task:</p>
+        <p class="hidden">{{form.member}}</p>
+        <p>Status of the task:</p>
+        <p>{{form.status}}</p>
+        <p>{{form.start_time.label_tag}}</p>
+        <p>{{form.start_time}}</p>
+        <p>{{form.end_time.label_tag}}</p>
+        <p>{{form.end_time}}</p>
+        <p>Do you want to upload files for member working on the project?</p>
+        <p><input class="button" type="button" name="group_files" id="group_file2" value="Browse Files"
+                onclick="document.getElementById('file2').click()"></p>
+        <p id="filename2"></p>
+        <p class="hidden"><input type="file" name="group_files" id="file2"></p>
+
+        {% elif request.user == group_task.member.user %}
+        <p class="hidden">{{form.title.label_tag}}</p>
+        <p class="hidden">{{form.title}}</p>
+        <p class="hidden">{{form.description.label_tag}}</p>
+        <p>{{form.description}}</p>
+        <p class="hidden">Choose member for the task:</p>
+        <p class="hidden">{{form.member}}</p>
+        <p>Status of the task:</p>
+        <p>{{form.status}}</p>
+        <p class="hidden">{{form.start_time.label_tag}}</p>
+        <p class="hidden">{{form.start_time}}</p>
+        <p class="hidden">{{form.end_time.label_tag}}</p>
+        <p class="hidden">{{form.end_time}}</p>
+        <p>Upload files for your supervisor: </p>
+        <p><input class="button" type="button" name="group_files" id="group_file3" value="Browse Files"
+                onclick="document.getElementById('file3').click()"></p>
+        <p id="filename3"></p>
+        <p class="hidden"><input type="file" name="group_files" id="file3"></p>
+
+        {% endif %}
+
+        {% endif %}
+        <div class="break-vertical"></div>
+        <div class="break-vertical"></div>
+        <input class="button" type="submit" value="Submit">
+
+    </form>
+</div>
+
+
+
+
+
+
+
+{% endblock content %}

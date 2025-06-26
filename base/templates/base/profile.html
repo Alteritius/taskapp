@@ -1,0 +1,69 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<div class="profile-container">
+    <div class="profile profile_picture">
+        <img src="{{user.profile.profile_picture.url}}">
+
+    </div>
+
+    <!-- <div class="break"></div> -->
+
+    <div class="profile username">
+
+        <h3>{{user.username}}</h3>
+
+    </div>
+
+    {% if request.user == user %}
+    <div class="profile update-user">
+        <a class="button" href="{% url 'update-profile' %}"> Edit Profile </a>
+    </div>
+    {% endif %}
+
+    <div class="profile-bio">
+        <h3>About:</h3>
+
+        <p>
+            {{user.profile.bio}}
+        </p>
+    </div>
+
+    <div class="break"></div>
+
+    <div class="profile groups">
+
+        <h3>Groups:</h3>
+
+        <div class="group-list">
+            {% for group in user_groups %}
+            <div class="group-wrapper">
+                <!-- <div class="group-title">
+                        <div class="group-complete-icon"></div>
+                        <a href="{% url 'group-detail' group.id %}">{{ group.name }}</a>
+                    </div>
+                    <a class="delete-link" href="#">&#215;</a> -->
+                <div class="group-title">
+                    <!-- <div class="group-complete-icon"></div> -->
+                    <h3><a href="{% url 'group-detail' group.id %}">{{ group.name }}</a></h3>
+                    <h2>Leader: <a href="{% url 'profile' group.leader.id %}">{{group.leader.username}}</a></h2>
+                    <h2>Number of participants: {{group.participants.all.count}}</h2>
+                </div>
+                <a class="delete-link" href="{% url 'group-delete' group.id %}">&#215;</a>
+
+
+            </div>
+            {% empty %}
+            <h3 class="empty">User doesn't belong to any groups at the moment</h3>
+            {% endfor %}
+        </div>
+
+
+
+    </div>
+
+</div>
+
+
+
+{% endblock content %}

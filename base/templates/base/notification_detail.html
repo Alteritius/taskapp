@@ -1,0 +1,52 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<div class="header-bar">
+    <a id="go-back">&#8592; Back</a>
+</div>
+
+<div class="card-body">
+
+    <h3 class="notification-detail-title">{{notification.title}}</h3>
+    <h4 class="notification-detail-description">{{notification.description|linebreaks}}</h4>
+
+
+    {% if notification.changed %}
+    <h4>What has changed: </h4>
+    <ul class="list-of-changes">
+        <h4 class="changes-holder">{{notification.changed}}</h4>
+    </ul>
+
+    {% endif %}
+
+    {% if notification.link %}
+
+    {% if link_arguments|length > 1 %}
+
+    <a href="{% url link_view link_arguments.0 link_arguments.1 %}">
+        <h4>Look up the {{notification.not_type}} here</h4>
+    </a>
+    {% elif link_arguments|length == 1 %}
+
+    <a href="{% url link_view link_arguments.0 %}">
+        <h4>Look up the {{notification.not_type}} here</h4>
+    </a>
+    {% else %}
+
+    <a href="{% url 'notifications-list' %}">
+        <h4>Look up the {{notification.not_type}} here</h4>
+    </a>
+
+    {% endif %}
+
+    {% else %}
+
+    <!-- <h4 class="notification-delete-info">The object is already deleted</h4> -->
+
+    {% endif %}
+
+
+</div>
+
+
+{% endblock content %}

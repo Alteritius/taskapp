@@ -1,0 +1,38 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<div class="header-bar">
+    <a href="{% url 'profile' request.user.id %}">&#8592; Back</a>
+    <h1 class="title">Update your profile</h1>
+</div>
+
+
+<div class="card-body">
+    <form method="POST" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{user_form.as_p}}
+
+        <label for="id_bio">{{profile_form.bio.label}}</label>
+        {{profile_form.bio}}
+
+        <div class="profile-picture-form">
+
+            <div class="profile-picture-input">
+                <label for="id_profile_picture">{{profile_form.profile_picture.label}}</label>
+                {{profile_form.profile_picture}}
+
+            </div>
+
+
+        </div>
+
+
+
+        <input class="button" type="submit" value="Submit">
+
+    </form>
+</div>
+
+
+{% endblock content %}

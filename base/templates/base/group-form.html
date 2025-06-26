@@ -1,0 +1,42 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<div class="header-bar"> 
+    <a id="go-back">&#8592; Back</a>
+    <div class="title">
+        <h1 class="title">{{title}}</h1>
+    </div>
+</div>
+
+
+<div class="card-body">
+    <form method="POST" action="">
+        {% csrf_token %}
+        <p>{{form.name.label_tag}}</p>
+        <p>{{form.name}}</p>
+        <p>{{form.description.label_tag}}</p>
+        <p>{{form.description}}</p>
+        <p>{{form.participants.label_tag}}</p>
+        
+        <input type="text" id="search-participants" value="{{search_query}}" placeholder="Search participants">
+        <!-- <p>{{form.participants}}</p> -->
+        <div id="id_participants">
+            {% for participant in form.participants.field.queryset %}
+            <div>
+                <label>
+                    <input type="checkbox" name="participants" value="{{participant.id}}">
+                    {{participant.username}}
+                </label>
+            </div>
+            {% endfor %}
+
+        </div>
+
+        <div class="break"></div>
+        <input class="button" type="submit" value="Submit">
+    
+    </form>
+</div>
+
+
+{% endblock content %}

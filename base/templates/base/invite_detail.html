@@ -1,0 +1,56 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<div class="header-bar">
+    <!-- <a href="{% url 'invite-list' %}">&#8592; Back</a> -->
+    <a id="go-back">&#8592; Back</a>
+</div>
+
+{% if request.user == invite.invited_user %}
+
+<div class="card-body">
+
+    <p>You were invited to group: {{invite.group.name}}, by {{invite.inviting_user}}"</p>
+    <p>Do you want to join the group to work together?</p>
+
+    <div class="button-wrapper">
+        <a class="button" href="{% url 'invite-accept' invite.id %}">Accept</a>
+        <div class="break-horizontal"></div>
+        <a class="button" href="{% url 'invite-reject' invite.id %}">Decline</a>
+    </div>
+
+
+</div>
+
+{% elif request.user == invite.inviting_user %}
+
+<div class="card-body">
+    {% if invite.accepted %}
+
+    <p>Invited user accepted your invitation.</p>
+    <p>You're going to find the invited user in your group page.</p>
+    <div class="button-wrapper">
+        <a class="button" href="{% url 'invite-delete' invite.id %}">Confirm</a>
+    </div>
+
+
+
+    {% elif invite.rejected %}
+
+    <p>Invited user rejected your invitation</p>
+    <div class="button-wrapper">
+        <a class="button" href="{% url 'invite-delete' invite.id %}">Confirm</a>
+    </div>
+
+
+    {% else %}
+    <p>Invited user "{{invite.invited_user.username}}" hasn't responded to your invitation yet.</p>
+    <p>Please wait further for the potential participant's response</p>
+
+    {% endif %}
+</div>
+
+
+{% endif %}
+
+{% endblock content %}

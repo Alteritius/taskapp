@@ -1,0 +1,250 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<div class="header-bar">
+
+    <a id="go-back">&#8592; Back</a>
+    <div class="title">
+        <h1 class="title">GroupTask: {{group_task.title}}</h1>
+        <!-- <h3 style="margin:0"> You have <i>{{count}}</i> incomplete task{{ count|pluralize:"s" }}</h3> -->
+    </div>
+
+</div>
+
+
+<div class="button-wrapper">
+    <div class="break"></div>
+    <a class="button" href="{% url 'group-task-update' group_task.group.id group_task.id %}">Update GroupTask</a>
+    <div class="break"></div>
+    {% if request.user == group_task.creator %}
+    <a class="button" href="{% url 'group-task-delete' group_task.group.id group_task.id %}">Delete GroupTask</a>
+    {% endif %}
+    <div class="break"></div>
+    <a class="button" href="{% url 'group-task-history' group_task.group.id group_task.id %}">History</a>
+</div>
+
+
+
+
+<div class="group-task-user-info">
+    <div class="group-task-header">
+
+        <div class="group-task-header-part">
+            <h3>Member working on the task:</h3>
+
+            <div class="break-horizontal"></div>
+            <div class="user-info">
+                <div class="user-profile">
+                    <a href="{% url 'profile' group_task.member.user.id %}"><img
+                            src="{{group_task.member.user.profile.profile_picture.url}}"></a>
+
+                </div>
+                <h2>{{group_task.member.user.username}}</h2>
+
+            </div>
+
+        </div>
+
+        <div class="group-task-header-part">
+
+            <h3>Supervisor:</h3>
+
+            <div class="break-horizontal"></div>
+            <div class="break-horizontal"></div>
+            <div class="user-info">
+                <div class="user-profile">
+                    <a href="{% url 'profile' group_task.creator.id %}"><img
+                            src="{{group_task.creator.profile.profile_picture.url}}"></a>
+                </div>
+                <h2>{{group_task.creator.username}}</h2>
+
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+    <!-- <div class="group-task-header">
+        <h3>Supervisor:</h3>
+        
+
+        <div class="user-info">
+            <div class="user-profile">
+                <a href="{% url 'profile' group_task.creator.id %}"><img src="{{group_task.creator.profile.profile_picture.url}}"></a>                 
+            </div>
+            <h2>{{group_task.creator.username}}</h2>
+
+        </div>
+
+    </div> -->
+
+</div>
+
+
+<div class="task-status">
+    <div class="group-task-header">
+        <h3>Status of the task:</h3>
+        <div class="break-horizontal"></div>
+        <div class="break-horizontal"></div>
+        <div class="break-horizontal"></div>
+        <h4 class="task-status-text">{{group_task.status}}</h4>
+    </div>
+
+
+
+</div>
+
+
+
+
+
+<div class="group-task-description">
+    <div class="group-header">
+        <h3>Description of the task:</h3>
+    </div>
+    <div class="description">
+        {{group_task.description}}
+    </div>
+
+
+</div>
+
+
+
+<div class="task-files-info">
+    <div class="group-task-header">
+        <h3>Uploaded files:</h3>
+    </div>
+
+    <div class="task-files">
+
+        {% if group_task.group_files %}
+
+        {% for file in group_files %}
+
+        <div class="task-file-wrapper">
+            <a href="{{path_to_file}}documents/group_task_{{group_task.id}}/{{file}}" download>{{ file }}</a>
+
+            {% if request.user == group_task.creator %}
+            <div class="delete-space">
+                <a class="delete-link"
+                    href="{% url 'group-task-delete-file' group_task.group.id group_task.id file %}">&#215;</a>
+            </div>
+            {% endif %}
+
+
+        </div>
+
+
+
+        {% endfor %}
+
+        {% endif %}
+
+    </div>
+
+
+
+</div>
+<!-- <div class="task-container">
+
+    <div class="task-list-header">
+        <h3>List of subtasks:</h3>
+
+        {% if request.user == group_task.creator %}
+        <a class="button" href="#">Create Group SubTask</a>
+        {% endif %}
+
+    </div>
+
+
+    <div class="task-items-wrapper">
+        {% for task in list_of_subtasks %}
+            <div class="task-wrapper group">
+                {% include 'task_list_code_group.html' %}
+            </div>
+        {% empty %}
+        <h3 class="empty">There aren't any tasks yet</h3>
+        {% endfor %}
+    </div>
+    
+
+</div> -->
+
+<!-- 
+<div class="participant-container">
+
+   
+
+    <div class="leader-section"> 
+
+        <div class="leader-profile">
+            <a href="{% url 'profile' group_task.creator.id %}"><img src="{{group_task.creator.profile.profile_picture.url}}"></a> 
+            
+        </div>
+        <h2>{{group_task.creator.username}}</h2>
+
+        
+        
+    </div>
+
+    <div class="group-header">
+        <h3>List of members working on the project:</h3>
+
+        {% if request.user == group_task.creator %}
+        <a class="button" href="{% url 'group-task-update' group_task.group.id group_task.id %}">Update GroupTask</a>
+        {% endif %}
+    </div>
+    
+
+    <div class="participant-list">
+
+        {% for worker in group_task.workers.all %}
+
+        <div class="leader-section"> 
+
+            <div class="leader-profile">
+                <a href="{% url 'profile' worker.user.id %}"><img src="{{worker.user.profile.profile_picture.url}}"></a> 
+
+                
+                {% if group_task.creator == request.user %}
+                <a class="delete-link" href="{% url 'group-task-worker-remove' group_task.group.id group_task.id worker.user.id%}"><div class="delete-circle"><span>&#215;</span></div></a>
+                {% endif %}
+                
+            </div>
+            <h2>{{worker.user.username}}</h2>
+            
+        </div>
+    
+        {% empty %}
+        <h3 class="empty">There aren't any people working on the project yet</h3>
+
+        {% endfor %}
+
+    </div>
+
+    
+
+</div> -->
+
+
+<!-- <div class="group-task-discussion">
+
+    <div class="group-header">
+        <h3>Discussion:</h3>
+    </div>
+
+    <div class="discussion">
+
+
+
+    </div>
+
+</div> -->
+
+
+
+
+{% endblock content %}

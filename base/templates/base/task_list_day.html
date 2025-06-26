@@ -1,0 +1,98 @@
+{% extends 'main.html' %}
+{% block content %}
+
+
+<div class="header-bar">
+    <div>
+        {% if month < 10 %} <h1>Tasks for a day: {{day}}.0{{month}}.{{year}}</h1>
+            {% else %}
+            <h1>Tasks for day: {{day}}.{{month}}.{{year}}</h1>
+            {% endif %}
+
+            <h3 style="margin:0"> You have <i>{{count}}</i> incomplete task{{ count|pluralize:"s" }} for the day</h3>
+    </div>
+    <!-- 
+    <a href="{% url 'calendar' %}">Calendar</a>
+
+    {% if request.user.is_authenticated %}
+    <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+    <a href="{% url 'login' %}">Login</a>
+    {% endif %} -->
+
+</div>
+
+
+<div id="search-add-wrapper">
+
+    <input type="text" name="search-area" id="search-tasks" value="{{search_input}}" placeholder="Search tasks">
+    <div class="day-buttons">
+        <a class="button" href="{% url 'tasks_for_day' prev_day.year prev_day.month prev_day.day %}">Previous Day</a>
+        <a class="button" href="{% url 'tasks_for_day' next_day.year next_day.month next_day.day %}">Next Day</a>
+    </div>
+
+    <a id="add-link" href="{% url 'task-create' clicked_date %}">&#43;</a>
+</div>
+
+
+
+
+
+<div class="task-items-wrapper">
+    {% for task in tasks %}
+    {% if task.status == 'pending' %}
+    <div class="task-wrapper pending">
+        {% include 'task_list_code.html' %}
+    </div>
+    {% elif task.status == 'overdue' %}
+    <div class="task-wrapper overdue">
+        {% include 'task_list_code.html' %}
+    </div>
+    {% elif task.status == 'completed' %}
+    <div class="task-wrapper completed">
+        {% include 'task_list_code.html' %}
+    </div>
+    {% endif %}
+    {% empty %}
+    <h3 class="empty-big">No tasks for the day</h3>
+    {% endfor %}
+</div>
+
+<div class="task-items-wrapper">
+    {% if group_tasks %}
+    <div class="task-header">
+        <h1>Group tasks related to you:</h1>
+    </div>
+
+    {% for task in group_tasks %}
+    <div class="task-wrapper group">
+        {% include 'task_list_code_group.html' %}
+    </div>
+    {% empty %}
+    <h3 class="empty">There aren't any tasks yet</h3>
+    {% endfor %}
+    {% endif %}
+
+</div>
+
+
+
+
+<!-- <table>
+    <tr>
+        <th>Item</th>
+        <th></th>
+        <th></th>
+    </tr>
+    {% for task in tasks %}
+    <tr>
+        <td>{{task.title}}</td>
+        <td><a href="{% url 'task-update' task.id %}">Edit</a></td>
+        <td><a href="{% url 'task-delete' task.id %}">Delete</a></td>
+    </tr>
+    {% empty %}
+        <h3>No itmes in list</h3>
+    {% endfor %}
+</table> -->
+
+{% endblock content %}

@@ -1,0 +1,84 @@
+{% extends 'main.html' %}
+{% block content %}
+
+
+<div class="header-bar">
+    <a id="go-back">&#8592; Back</a>
+    <div class="title">
+        <h1>History</h1>
+    </div>
+
+</div>
+
+
+<div id="search-add-wrapper-notifications">
+
+    <input type="text" name="search-area" id="search-notifications" value="{{search_input}}"
+        placeholder="Search notifications">
+    <div class="day-buttons">
+        <!-- <button class="button hidden">Delete all</button> -->
+    </div>
+</div>
+
+<form method="POST" action="{% url 'notifications-delete-many' %}">
+    {% csrf_token %}
+    <input type="hidden" name="next_page" value="{{request.META.HTTP_REFERER|default:'/notifications/' }}">
+    {% if request.user == group_task.creator %}
+    <div class="check-all">
+        <div class="notification-check">
+            <input type="checkbox" class="notification-checkbox-all">
+            <h4>Check all</h4>
+        </div>
+        <button type="submit" class="button delete-checkbox hidden">Delete all</button>
+    </div>
+    {% endif %}
+
+
+
+
+    <div class="notifications-items-wrapper">
+        {% for notification in notifications_list %}
+        {% if notification.seen %}
+        <div class="notification-wrapper seen">
+            {% else %}
+            <div class="notification-wrapper">
+                {% endif %}
+                <div class="notification-title">
+                    {% if request.user == group_task.creator %}
+                    <div class="notification-check">
+                        <input type="checkbox" class="notification-checkbox" name="chosen-items"
+                            value="{{notification.not_type}}, {{ notification.id }}">
+                    </div>
+                    {% endif %}
+
+                    <a href="{% url 'notification-detail' notification.not_type notification.id %}">
+                        <div class="notification-info">
+                            <h3>{{notification.title}}</h3>
+                            <h4>Related to: {{notification.not_type}}</h4>
+                            <h4>Created: {{notification.created|timesince}} ago</h4>
+                        </div>
+                    </a>
+
+
+
+                </div>
+                {% if request.user == group_task.creator %}
+                <div class="delete-space">
+                    <a class="delete-link"
+                        href="{% url 'notification-delete' notification.not_type notification.id %}">&#215;</a>
+                </div>
+                {% endif %}
+            </div>
+            {% empty %}
+            <h3 class="empty-big">No notifications at the moment</h3>
+            {% endfor %}
+        </div>
+
+
+
+    </div>
+</form>
+
+
+
+{% endblock content %}

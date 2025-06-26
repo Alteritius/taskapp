@@ -1,0 +1,19 @@
+<div class="task-title week">
+
+    <a href="{% url 'group-task-detail' task.group.id task.id %}">
+        <div>
+            <h3>{{task}}</h3>
+            <h4>Member: {{task.member.user.username}}</h4>
+            <h4>Supervisor: {{task.creator.username}}</h4>
+            <h4>Until: {{task.end_time}}</h4>
+            {% if task.overdue %}
+            <h4 class="calendar-week-group-status overdue">Status: {{task.status}}</h4>
+            {% else %}
+            <h4 class="calendar-week-group-status">Status: {{task.status}}</h4>
+            {% endif %}
+        </div>
+    </a>
+
+</div>
+
+<a class="delete-link" href="{% url 'group-task-delete' task.group.id task.id %}">&#215;</a>

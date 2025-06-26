@@ -1,0 +1,36 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<div class="header-bar"> 
+    <!-- <a href="{% url 'dashboard' %}">&#8592; Back</a> -->
+    <a id="go-back">&#8592; Back</a>
+</div>
+
+
+<div class="card-body">
+    <form method="POST" action="">
+        {% csrf_token %}
+        {% url 'dashboard' as dashboard_url %}
+        <input type="hidden" name="next_page" value="{{request.META.HTTP_REFERER|default:dashboard_url }}">
+
+
+        <p>{{form.title.label_tag}}</p>
+        <p>{{form.title}}</p>
+        <p>{{form.description.label_tag}}</p>
+        <p>{{form.description}}</p>
+        <p>Did you manage to complete your task?</p>
+        <p>{{form.complete}}</p>
+        <p>{{form.start_time.label_tag}}</p>
+        <p>{{form.start_time}}</p>
+        <p>{{form.end_time.label_tag}}</p>
+        <p>{{form.end_time}}</p>
+        <div class="break"></div>
+        <div class="break"></div>
+        <div class="break"></div>
+        <input class="button" type="submit" value="Submit">
+    
+    </form>
+</div>
+
+
+{% endblock content %}

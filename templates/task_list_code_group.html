@@ -1,0 +1,89 @@
+<div class="task-title-and-overdue">
+    <div class="task-title group">
+        <div class="task-completion-icon">
+            {% if task.status == 'pending' %}
+            <div class="task-icon pending"></div>
+            {% elif task.status == 'initiated' %}
+            <div class="task-icon initiated"></div>
+            {% elif task.status == 'overdue' %}
+            <div class="task-icon overdue"></div>
+            {% elif task.status == 'finished' %}
+            <div class="task-icon finished"></div>
+            {% elif task.status == 'need adjustments' %}
+            <div class="task-icon need-adjustments"></div>
+            {% elif task.status == 'verified' %}
+            <div class="task-icon completed"></div>
+            {% endif %}
+        </div>
+
+        <div class="task-info">
+            <a href="{% url 'group-task-detail' task.group.id task.id %}">
+                <h3>{{task.title}}</h3>
+            </a>
+            <!-- <div class="group-task-members group">
+                <h4> Group associated with the task: </h4>
+                <a href="{% url 'group-detail' task.group.id %}" id="info-group">{{task.group.name}}</a>
+            </div>
+            <div class="group-task-members member">
+                <h4> Member working on the task: </h4>
+                <a href="{% url 'profile' task.member.user.id %}" id="info-member">{{task.member.user.username}}</a>
+            </div>
+            <div class="group-task-members creator">
+                <h4> Supervisor: </h4>
+                <a href="{% url 'profile' task.creator.id %}" id="info-creator">{{task.creator.username}}</a>
+            </div> -->
+            <div class="group-task-members group">
+                <h4> Group associated with the task: </h4>
+                <a href="{% url 'group-detail' task.group.id %}" id="info-group">
+                    <h5>{{task.group.name}}</h5>
+                </a>
+            </div>
+            <div class="group-task-members member">
+                <h4> Member working on the task: </h4>
+                <a href="{% url 'profile' task.member.user.id %}" id="info-member">
+                    <h5>{{task.member.user.username}}</h5>
+                </a>
+            </div>
+            <div class="group-task-members creator">
+                <h4> Supervisor: </h4>
+                <a href="{% url 'profile' task.creator.id %}" id="info-creator">
+                    <h5>{{task.creator.username}}</h5>
+                </a>
+            </div>
+            <div class="group-task-members">
+                <h4> Deadline: {{task.start_time}} - {{task.end_time}} </h4>
+            </div>
+            {% if task.overdue == True and task.status == 'overdue' %}
+            <div class="group-task-members status overdue">
+                <h4>Task Status: {{task.status}}</h4>
+            </div>
+            {% else %}
+            <div class="group-task-members status">
+                <h4>Task Status: {{task.status}}</h4>
+            </div>
+            {% endif %}
+
+
+
+        </div>
+
+    </div>
+
+    {% if task.overdue and task.status != 'verified' %}
+    <div class="overdue-info">
+        <div class="overdue-icon">
+            <h3>!</h3>
+        </div>
+        <div class="break-horizontal"></div>
+        <h3 class="overdue-info-text">This task is overdue</h3>
+    </div>
+    {% else %}
+    {% endif %}
+</div>
+
+{% if request.user == task.creator %}
+<div class="delete-space">
+    <a class="delete-link" href="{% url 'group-task-delete' task.group.id task.id %}">&#215;</a>
+</div>
+{% endif %}
+<!-- <a class="delete-link" href="{% url 'task-delete' task.id %}">&#215;</a> -->
