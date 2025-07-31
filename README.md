@@ -32,7 +32,17 @@ pip install -r requirements.txt
 prepare the database (optionally you can delete the one provided in the repo and create your own sqlite3 database with this command):
 
 ```
+python manage.py makemigrations
+```
+
+```
 python manage.py migrate
+```
+
+if you want to create your own sqlite3 database instance, you have to also run this command and create superuser for the db:
+
+```
+python manage.py createsuperuser
 ```
 
 then you can start the app,
@@ -47,6 +57,8 @@ then you can safely run the server:
 ```
 python manage.py runserver
 ```
+
+By default the app is run on the port 8000
 
 #### Optional:
 
